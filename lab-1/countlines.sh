@@ -8,11 +8,9 @@ while getopts "o:m:" flag; do
     m)
         option_m="${OPTARG}"
         ;;
-    :)
-        echo "Option requires an argument." >&2
-        ;;
     *)
-        echo "Invalid option: Do you need help? (yes/no)"
+        echo "Invalid option or no arguments, review the help
+        Do you need help? (yes/no)"
         read -r answer
         if [ "$answer" = "yes" ]; then
             echo " Help: please choose one of the following options 
@@ -43,7 +41,6 @@ if [ -n "$option_o" ] && [ -n "$option_m" ]; then
         if [ "$user" == "$option_o" ]; then
             file_array+=("$file")
             mod_month=$(date -d "$(stat -c %y "$file")" | awk '{print $2}')
-            echo "${mod_month}"
             if [ "$mod_month" == "$option_m" ]; then
                 echo "File: $file, Lines:                     $(awk 'END {print NR}' "$file") " "$file"
             fi
