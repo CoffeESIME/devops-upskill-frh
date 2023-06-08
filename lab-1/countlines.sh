@@ -1,5 +1,20 @@
 #!/bin/bash
 
+get_owner() {
+    local file=$1
+    stat -c %U "$file"
+}
+
+get_mod_month() {
+    local file=$1
+    date -d "$(stat -c %y "$file")" '+%B'
+}
+
+count_lines() {
+    local file=$1
+    awk 'END {print NR}' "$file"
+}
+
 while getopts "o:m:" flag; do
     case ${flag} in
     o)
@@ -20,13 +35,14 @@ while getopts "o:m:" flag; do
             read -r answer
             if [ "$answer" = "users" ]; then
                 ls -l | awk '{print $3}' | sort -u
-            fi
-            if [ "$answer" = "options" ]; then
+            elif [ "$answer" = "options" ]; then
                 echo "The options for this file are 
                     -o) Has the argument 'name of user'
                     ex. bash countlines.sh -o fabs
-                    -m) Has the argument of month it can be used to filter files by month with user or just month
+                    -m) Has the argument of month it can be used to filter files by month with user or just month, the month should be a name of a month with the irst letter as a uppercase
                      "
+            else
+                echo "You didn't choose a option"
             fi
         fi
         exit 1
@@ -35,37 +51,30 @@ while getopts "o:m:" flag; do
     esac
 done
 
-if [ -n "$option_o" ] && [ -n "$option_m" ]; then
+if [ "${option_o}" ] && [ "${option_m}" ]; then 
     for file in *".txt"; do
-        user=$(stat -c %U "$file")
+        user=$(get_owner "$file")
+        mod_month=$(get_mod_month "$file")
+        if [ "$user" == "$option_o" ] && [ "$mod_month" == "$option_m" ]; then
+            echo "File: $file, Lines: $(count_lines "$file")"
+        fi
+    done
+
+elif [ "${option_o}" ]; then
+    for file in *".txt"; do
+        user=$(get_owner "$file")
+        mod_month=$(get_mod_month "$file")
         if [ "$user" == "$option_o" ]; then
-            file_array+=("$file")
-            mod_month=$(date -d "$(stat -c %y "$file")" | awk '{print $2}')
-            if [ "$mod_month" == "$option_m" ]; then
-                echo "File: $file, Lines:                     $(awk 'END {print NR}' "$file") " "$file"
-            fi
+                echo "File: $file, Lines: $(count_lines "$file")"
         fi
     done
-    exit 1
-fi
 
-if [ -n "$option_o" ]; then
-    echo "Option -a was provided with argument: $option_o"
+elif [ "${option_m}" ]; then
     for file in *".txt"; do
-        user=$(stat -c %U "$file")
-        if [ "$user" == "$OPTARG" ]; then
-            echo "File: $file, Lines:                     $(awk 'END {print NR}' "$file") " "$file"
-        fi
-    done
-fi
-
-if [ -n "$option_m" ]; then
-    echo "Option -b was provided with argument: $option_m"
-    for file in *".txt"; do
-        mod_month=$(date -d "$(stat -c %y "$file")" | awk '{print $2}')
-        echo "${mod_month}"
+        user=$(get_owner "$file")
+        mod_month=$(get_mod_month "$file")
         if [ "$mod_month" == "$option_m" ]; then
-            echo "File: $file, Lines:                     $(awk 'END {print NR}' "$file") " "$file"
+                echo "File: $file, Lines: $(count_lines "$file")"
         fi
     done
 fi
