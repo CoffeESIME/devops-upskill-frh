@@ -56,7 +56,7 @@ if [ "${option_o}" ] && [ "${option_m}" ]; then
         user=$(get_owner "$file")
         mod_month=$(get_mod_month "$file")
         if [ "$user" == "$option_o" ] && [ "$mod_month" == "$option_m" ]; then
-            echo "File: $file, Lines: $(count_lines "$file")"
+            echo "File: $file, Lines:                      $(count_lines "$file")" "${file}"
         fi
     done
 
@@ -65,7 +65,7 @@ elif [ "${option_o}" ]; then
         user=$(get_owner "$file")
         mod_month=$(get_mod_month "$file")
         if [ "$user" == "$option_o" ]; then
-                echo "File: $file, Lines: $(count_lines "$file")"
+            echo "File: $file, Lines:                      $(count_lines "$file")" "${file}"
         fi
     done
 
@@ -74,7 +74,7 @@ elif [ "${option_m}" ]; then
         user=$(get_owner "$file")
         mod_month=$(get_mod_month "$file")
         if [ "$mod_month" == "$option_m" ]; then
-                echo "File: $file, Lines: $(count_lines "$file")"
+            echo "File: $file, Lines:                      $(count_lines "$file")" "${file}"
         fi
     done
 fi
