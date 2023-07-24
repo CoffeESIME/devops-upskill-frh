@@ -26,6 +26,10 @@ stop_containers() {
 compose_cotainers() {
     docker compose up -d
 }
+
+compose_down_containers() {
+    docker compose down 
+}
 # Check the command-line argument
 if [ "$1" = "start" ]; then
     start_containers
@@ -33,6 +37,8 @@ if [ "$1" = "start" ]; then
     stop_containers
     elif [ "$1" = "compose" ]; then
     compose_cotainers
+    elif [ "$1" = "decompose" ]; then
+    compose_down_containers
 else
-    echo "Invalid argument. Please use 'start', 'stop' or 'compose'."
+    echo "Invalid argument. Please use 'start', 'stop' or 'compose' 'decompose'."
 fi
