@@ -11,7 +11,7 @@ COPY . .
 # Run the next build process and generate the artifacts
 RUN npm run build
 
-FROM node:18-alpine
+FROM build
 WORKDIR /app
 COPY --from=build /app .
 EXPOSE 3000

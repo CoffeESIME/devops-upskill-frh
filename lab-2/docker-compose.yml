@@ -1,0 +1,26 @@
+version: '3'
+services:
+  next-app:
+    build:
+      context: ./nutriapp
+      dockerfile: Dockerfile
+    ports:
+      - '8080:3000'
+    depends_on:
+      - nest-server
+
+  nest-server:
+    build:
+      context: ./nutriserver
+      dockerfile: Dockerfile
+    ports:
+      - '4100:4100'
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data:/data/nutria
