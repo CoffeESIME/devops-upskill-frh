@@ -21,7 +21,7 @@ export default function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>()
-    
+
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4200';
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -67,7 +67,6 @@ export default function Login() {
                         Password
                     </label>
                     <input
-
                         id="password"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="password"

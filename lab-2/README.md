@@ -11,8 +11,8 @@ This repository contains a Next.js application, a Nest.js server, and a MongoDB 
 
 ## How to Use
 
-
 - `OneByOne.sh`: This script accepts a command-line argument to either start or stop the containers. To start the containers, run `./OneByOne.sh start`. To stop the containers, run `./OneByOne.sh stop`. If want to use the docker-compose use `./OneByOne.sh compose` and `./OneByOne.sh decompose` instead.
 
-
 Before running these scripts, make sure to give them execute permissions with `chmod +x OneByOne.sh`
+
+Once you enter to the app, in the port 8080, you can add a user in localhost:8080/login, after adding a user, the page will redirect to localhost:8080/ where you will see the user data in the page
